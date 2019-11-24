@@ -50,7 +50,6 @@
 #include "main.h"
 
 
-
 void (*IOCAF4_InterruptHandler)(void);
 void (*IOCBF6_InterruptHandler)(void);
 
@@ -143,7 +142,8 @@ void PIN_MANAGER_IOC(void)
 void IOCAF4_ISR(void) {
 
     // Add custom IOCAF4 code
-    pin_status = modifyBit(pin_status, 1, BOOST_EN_GetValue());
+   // pin_status = modifyBit(pin_status, 1, BOOST_EN_GetValue());
+    update_status_flag = 1;
     // Call the interrupt handler for the callback registered at runtime
     if(IOCAF4_InterruptHandler)
     {
@@ -173,7 +173,8 @@ void IOCAF4_DefaultInterruptHandler(void){
 void IOCBF6_ISR(void) {
 
     // Add custom IOCBF6 code
-    pin_status = modifyBit(pin_status, 2, OTG_EN_GetValue()); 
+    //  pin_status = modifyBit(pin_status, 2, OTG_EN_GetValue()); 
+    update_status_flag =1;
     // Call the interrupt handler for the callback registered at runtime
     if(IOCBF6_InterruptHandler)
     {

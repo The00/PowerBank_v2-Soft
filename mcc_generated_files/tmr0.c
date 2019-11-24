@@ -55,6 +55,8 @@
   Section: Global Variables Definitions
 */
 
+volatile uint8_t  update_status_flag=0;
+
 volatile uint8_t timer0ReloadVal;
 void (*TMR0_InterruptHandler)(void);
 /**
@@ -108,24 +110,41 @@ void TMR0_Reload(void)
 void TMR0_ISR(void)
 {
     static volatile uint16_t CountCallBack = 0;
+    static uint8_t led_blink =0; // indicate if the LED should blink
     uint16_t val;
     // Clear the TMR0 interrupt flag
     INTCONbits.TMR0IF = 0;
 
     TMR0 = timer0ReloadVal;
 
+    if(update_status_flag)
+    {
+        pin_status = 0; //reset status
+        pin_status += BOOST_EN_GetValue(); // write new value 
+        pin_status += (OTG_EN_GetValue()<<1); // write new value   
+        update_status_flag =0;
+    }
+    
+    val = GetBattValue();
+    if(val <= LOW_BATT_THRESHOLD)  led_blink =1;
+    else 
+    {
+        led_blink =0;
+        if(pin_status !=0) LED_SetLow(); //turn on LED
+    }
+    
+    
     // callback function - called every 35th pass
     if (++CountCallBack >= TMR0_INTERRUPT_TICKER_FACTOR)
     {
         if(pin_status !=0)
         {
-            val = GetBattValue();
-            if(val <= LOW_BATT_THRESHOLD)  LED_Toggle();
-            else LED_SetHigh();
+            if(led_blink) LED_Toggle();
+            
         }
         
         // ticker function call
-        TMR0_CallBack();
+       // TMR0_CallBack();
 
         // reset ticker counter
         CountCallBack = 0;
@@ -149,7 +168,7 @@ void TMR0_SetInterruptHandler(void (* InterruptHandler)(void)){
 }
 
 void TMR0_DefaultInterruptHandler(void){
-   // LED_Toggle();
+    LED_Toggle();
 }
 
 /**
