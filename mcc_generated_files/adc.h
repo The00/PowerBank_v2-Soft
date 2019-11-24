@@ -56,7 +56,7 @@
 
 #define NBIT 3
 #define BUFF_SIZE 8 // must be a power of 2
-#define LOW_BATT_THRESHOLD 774
+#define LOW_BATT_THRESHOLD 770
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

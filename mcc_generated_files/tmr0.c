@@ -117,13 +117,14 @@ void TMR0_ISR(void)
 
     TMR0 = timer0ReloadVal;
 
-    if(update_status_flag)
-    {
+   // if(update_status_flag) // if a input pin changed state
+    
+        // pin read is here to avoid reading during bouncing
         pin_status = 0; //reset status
         pin_status += BOOST_EN_GetValue(); // write new value 
         pin_status += (OTG_EN_GetValue()<<1); // write new value   
         update_status_flag =0;
-    }
+    
     
     val = GetBattValue();
     if(val <= LOW_BATT_THRESHOLD)  led_blink =1;

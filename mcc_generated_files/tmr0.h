@@ -66,7 +66,7 @@ extern volatile uint8_t  update_status_flag;
   Section: Macro Declarations
 */
 
-#define TMR0_INTERRUPT_TICKER_FACTOR    7
+#define TMR0_INTERRUPT_TICKER_FACTOR    4
 
 /**
   Section: TMR0 APIs
