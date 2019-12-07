@@ -118,6 +118,11 @@ void PIN_MANAGER_Initialize(void)
   
 void PIN_MANAGER_IOC(void)
 {   
+    if(INTCONbits.TMR0IE ==0) 
+    {
+        PIE1bits.ADIE = 1; // re-enable ADC ISR
+        INTCONbits.TMR0IE =1; //re-enable timer0 interrupt
+    }
 	// interrupt on change for pin IOCAF4
     if(IOCAFbits.IOCAF4 == 1)
     {
@@ -135,7 +140,6 @@ void PIN_MANAGER_IOC(void)
 */
 void IOCAF4_ISR(void) {
 
-    update_status_flag = 1;
     IOCAFbits.IOCAF4 = 0;
 }
 
@@ -158,7 +162,7 @@ void IOCAF4_DefaultInterruptHandler(void){
    IOCBF6 Interrupt Service Routine
 */
 void IOCBF6_ISR(void) {
-    update_status_flag =1;
+    
     IOCBFbits.IOCBF6 = 0;
 }
 

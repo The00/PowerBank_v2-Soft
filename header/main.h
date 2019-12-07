@@ -35,8 +35,8 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "pin_manager.h"
 #include "mcc.h"
-extern volatile uint16_t batt_adc;
 extern volatile uint8_t pin_status;
+extern volatile uint8_t  wait_for_timer;
 
 #ifdef	__cplusplus
 extern "C" {

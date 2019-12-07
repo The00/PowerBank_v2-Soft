@@ -65,6 +65,8 @@
 #endif
 
 uint16_t GetBattValue();
+void ADC_Enable();
+void ADC_Disable();
         
 /**
   Section: Data Types Definitions

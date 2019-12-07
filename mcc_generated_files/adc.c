@@ -69,6 +69,17 @@ uint16_t GetBattValue()
     return (batt_value>>NBIT);
 }
 
+void ADC_Disable()
+{
+    ADCON0 &=0xFE;
+}
+
+
+void ADC_Enable()
+{
+    ADCON0 |=1;
+}
+
 void ADC_Initialize(void)
 {
     // set the ADC to the options selected in the User Interface

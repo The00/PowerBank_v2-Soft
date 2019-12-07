@@ -47,8 +47,8 @@
                          Main application
  */
 
-volatile uint16_t batt_adc=0; 
 volatile uint8_t pin_status =0;
+volatile uint8_t  wait_for_timer =0;
 
 void main(void)
 {
@@ -71,19 +71,32 @@ void main(void)
 
     // Disable the Peripheral Interrupts
     //INTERRUPT_PeripheralInterruptDisable();
-
+      
     while (1)
-    {
+    {    
+        while(wait_for_timer ==0)
+        {
+            NOP();
+        }
+        
+        wait_for_timer =0;
+        pin_status = 0;
+        pin_status += BOOST_EN_GetValue();  
+        pin_status += (OTG_EN_GetValue()<<1);
+        
+        
         if(pin_status ==0)
 		{
 			// go power down
             
             // stop timer 0
-            /*TMR0_WriteTimer(0);
-            INTCONbits.TMR0IF = 0;
-            INTCONbits.TMR0IE = 0;*/
-			LED_SetHigh(); // turn off LED
-			//SLEEP();
+           TMR0_WriteTimer(0);
+           INTCONbits.TMR0IF = 0; // clear timer interrupt flag
+           INTCONbits.TMR0IE = 0; // disable timer interrupt
+           PIE1bits.ADIE = 0; // disable ADC ISR
+           LED_SetHigh(); // turn off LED
+           SLEEP();
+           NOP();
 		}
         else
         {

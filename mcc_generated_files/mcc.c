@@ -55,7 +55,7 @@ void SYSTEM_Initialize(void)
     WDT_Initialize();
     FVR_Initialize();
     ADC_Initialize();
-   // EXT_INT_Initialize();
+    //EXT_INT_Initialize();
     TMR0_Initialize();
 }
 

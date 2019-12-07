@@ -55,7 +55,7 @@
   Section: Global Variables Definitions
 */
 
-volatile uint8_t  update_status_flag=0;
+
 
 volatile uint8_t timer0ReloadVal;
 void (*TMR0_InterruptHandler)(void);
@@ -114,16 +114,8 @@ void TMR0_ISR(void)
     uint16_t val;
     // Clear the TMR0 interrupt flag
     INTCONbits.TMR0IF = 0;
-
+    wait_for_timer =1; // set flag for main()
     TMR0 = timer0ReloadVal;
-
-   // if(update_status_flag) // if a input pin changed state
-    
-        // pin read is here to avoid reading during bouncing
-        pin_status = 0; //reset status
-        pin_status += BOOST_EN_GetValue(); // write new value 
-        pin_status += (OTG_EN_GetValue()<<1); // write new value   
-        update_status_flag =0;
     
     
     val = GetBattValue();

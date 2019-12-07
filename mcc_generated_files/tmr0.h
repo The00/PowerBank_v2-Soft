@@ -54,7 +54,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-extern volatile uint8_t  update_status_flag;
+
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 
