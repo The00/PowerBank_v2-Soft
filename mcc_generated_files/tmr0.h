@@ -67,7 +67,8 @@
 */
 
 #define TMR0_INTERRUPT_TICKER_FACTOR    4
-
+#define TMR0_CRITICAL_BATT_BLINK        1 
+#define TMR0_LOW_BATT_BLINK             4
 /**
   Section: TMR0 APIs
 */

@@ -59,6 +59,7 @@
 
 volatile uint8_t timer0ReloadVal;
 void (*TMR0_InterruptHandler)(void);
+uint8_t tmr0_ticket_factor;
 /**
   Section: TMR0 APIs
 */
@@ -119,7 +120,16 @@ void TMR0_ISR(void)
     
     
     val = GetBattValue();
-    if(val <= LOW_BATT_THRESHOLD)  led_blink =1;
+    if(val<= CRITICAL_BATT_THRESHOLD)
+    {
+        tmr0_ticket_factor = TMR0_CRITICAL_BATT_BLINK;
+        led_blink =1;
+    }
+    else if(val <= LOW_BATT_THRESHOLD)  
+    {
+        tmr0_ticket_factor = TMR0_LOW_BATT_BLINK;
+        led_blink =1;
+    }
     else 
     {
         led_blink =0;
@@ -128,16 +138,9 @@ void TMR0_ISR(void)
     
     
     // callback function - called every 35th pass
-    if (++CountCallBack >= TMR0_INTERRUPT_TICKER_FACTOR)
+    if (++CountCallBack >= tmr0_ticket_factor)
     {
-        if(pin_status !=0)
-        {
-            if(led_blink) LED_Toggle();
-            
-        }
-        
-        // ticker function call
-       // TMR0_CallBack();
+        if(pin_status !=0)   if(led_blink) LED_Toggle();
 
         // reset ticker counter
         CountCallBack = 0;
